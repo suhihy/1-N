@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import Article
+from .models import Article, Comment
 from .forms import ArticleForm, CommentForm
 
 # Create your views here.
@@ -17,9 +17,12 @@ def detail(request, id):
     article = Article.objects.get(id=id)
     form = CommentForm()
 
+    comments = Comment.objects.filter(article_id=id)
+
     context = {
         'article': article,
         'form': form,
+        'comments': comments
     }
 
     return render(request, 'detail.html', context)
@@ -53,7 +56,7 @@ def comment_create(request, article_id):
             # comment.save()
 
             # 2. integer(숫자)를 저장하는 방법
-            commnet.article_id = article_id
+            comment.article_id = article_id
             comment.save()
 
 
